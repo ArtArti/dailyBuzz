@@ -29,20 +29,20 @@ export default function Nav() {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 bg-gray-500"
               >
-                <li className="nav-item">
-                  <Link className="nav-link" aria-current="page" to="/">
+                <li>
+                  <Link  aria-current="page" to="/">
                     Home
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/business">
+                  <Link  to="/business">
                     Business
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/entertainment">
+                  <Link  to="/entertainment">
                     Entertainment
                   </Link>
                 </li>
@@ -73,8 +73,8 @@ export default function Nav() {
                 </li>
               </ul>
             </div>
-            <a href="/" className="btn btn-ghost text-xl hover:bg-slate-200">
-            DailyBuzz
+            <a href="/" className="btn btn-ghost text-xl bg-slate-200">
+             <img src="/logo.png" alt="..."/> 
             </a>
           </div>
           <div className="navbar-center hidden lg:flex">
