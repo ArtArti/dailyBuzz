@@ -3,9 +3,10 @@ import News from './Components/News'
 import LoadingBar from "react-top-loading-bar";
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
+
 function App() {
   const pageSize = 5;
-  const apiKey = "7cb7afa28fb741e78066e4a17e29c829";
+  const apiKey = import.meta.env.VITE_API_KEY;
   const [progress, setProgress] = useState(0);
 
   return (
