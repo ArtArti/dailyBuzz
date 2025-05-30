@@ -15,7 +15,7 @@ const News = (props) => {
   };
   const updateNews = async () => {
     props.setProgress(10);
-    const url = `https://newsapi.org/v2/top-headlines?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    const url = `https://gnews.io/api/v4/top-headlines?token=${props.apiKey}&lang=en&country=us&q=${props.category}&max=${props.pageSize}&page=${page}`;
 
     setLoading(true);
     let data = await fetch(url);
@@ -34,7 +34,7 @@ const News = (props) => {
   }, []);
 
   const fetchMoreData = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+   const url = `https://gnews.io/api/v4/top-headlines?token=${props.apiKey}&lang=en&country=us&q=${props.category}&max=${props.pageSize}&page=${page}`;
     setPage(page + 1);
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -55,12 +55,12 @@ const News = (props) => {
         DailyBuzz - Top {capitalizeFirstLetter(props.category)} Headlines
       </h2>
       {loading && <Spinner />}
-      {/* <InfiniteScroll
+      <InfiniteScroll
         dataLength={articles ? articles.length : 0} // Add a check for articles being defined
         next={fetchMoreData}
         hasMore={articles ? articles.length !== totalResults : false} // Add a check for articles being defined
         loader={<Spinner />}
-      > */}
+      >
         <div className="container lg:flex flex-wrap">
           <div className="row flex flex-wrap justify-center items-center">
             {articles &&
@@ -69,7 +69,7 @@ const News = (props) => {
                   <NewsItem
                     title={element.title || ""}
                     description={element.description || ""}
-                    imageUrl={element.urlToImage}
+                  imageUrl={element.image} 
                     newsUrl={element.url}
                     author={element.author}
                     date={element.publishedAt}
@@ -79,7 +79,7 @@ const News = (props) => {
               ))}
           </div>
         </div>
-      {/* </InfiniteScroll> */}
+      </InfiniteScroll>
     </>
   );
 };
