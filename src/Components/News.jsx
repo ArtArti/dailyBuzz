@@ -46,7 +46,7 @@ const News = (props) => {
   return (
     <>
       <h1 className=" text-centre mx-12 my-8 font-bold text-5xl">
-        Navigate the Noise: Let <span>DailyBuzz</span> Guide You to the Stories
+        Navigate the Noise: Let <span>Daily_Buzz</span> Guide You to the Stories
         That Matter
       </h1>
       <h2
