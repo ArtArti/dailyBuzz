@@ -13,10 +13,10 @@ const News = (props) => {
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+
   const updateNews = async () => {
     props.setProgress(10);
-  const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
-
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     setLoading(true);
     let data = await fetch(url);
     props.setProgress(30);
@@ -31,12 +31,13 @@ const News = (props) => {
   useEffect(() => {
     document.title = `${capitalizeFirstLetter(props.category)} - DailyBuzz`;
     updateNews();
+    // eslint-disable-next-line
   }, []);
 
   const fetchMoreData = async () => {
- const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
-
-    setPage(page + 1);
+    const nextPage = page + 1;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${nextPage}&pageSize=${props.pageSize}`;
+    setPage(nextPage);
     let data = await fetch(url);
     let parsedData = await data.json();
     setArticles(articles.concat(parsedData.articles));
@@ -45,42 +46,34 @@ const News = (props) => {
 
   return (
     <>
-      <h1 className=" text-centre mx-12 my-8 font-bold text-5xl">
-        Navigate the Noise: Let <span>Daily_Buzz</span> Guide You to the Stories
+      <h1 className="text-center mx-12 my-8 font-bold text-5xl">
+        Navigate the Noise: Let <span>DailyBuzz</span> Guide You to the Stories
         That Matter
       </h1>
-      <h2
-        className="text-center text-4xl font-bold"
-        style={{ margin: "35px 0px", marginTop: "90px" }}
-      >
+      <h2 className="text-center text-4xl font-bold my-10">
         DailyBuzz - Top {capitalizeFirstLetter(props.category)} Headlines
       </h2>
       {loading && <Spinner />}
       <InfiniteScroll
-        dataLength={articles ? articles.length : 0} // Add a check for articles being defined
+        dataLength={articles.length}
         next={fetchMoreData}
-        hasMore={articles ? articles.length !== totalResults : false} // Add a check for articles being defined
-        loader={<Spinner />}>
-        <div className="container lg:flex flex-wrap">
-          <div className="row flex flex-wrap justify-center items-center">
-            {articles &&
-              articles.map((element) => {
-                return (
-                  <div className="col-md-4" key={element.url}>
-                    <NewsItem
-                      title={element.title ? element.title : ""}
-                      description={
-                        element.description ? element.description : ""
-                      }
-                      imageUrl={element.urlToImage}
-                      newsUrl={element.url}
-                      author={element.author}
-                      date={element.publishedAt}
-                      source={element.source.name}
-                    />
-                  </div>
-                );
-              })}
+        hasMore={articles.length !== totalResults}
+        loader={<Spinner />}
+      >
+        <div className="container mx-auto px-4">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {articles.map((element) => (
+              <NewsItem
+                key={element.url}
+                title={element.title || ""}
+                description={element.description || ""}
+                imageUrl={element.urlToImage}
+                newsUrl={element.url}
+                author={element.author}
+                date={element.publishedAt}
+                source={element.source.name}
+              />
+            ))}
           </div>
         </div>
       </InfiniteScroll>
@@ -98,6 +91,8 @@ News.propTypes = {
   country: PropTypes.string,
   pageSize: PropTypes.number,
   category: PropTypes.string,
+  apiKey: PropTypes.string.isRequired,
+  setProgress: PropTypes.func.isRequired,
 };
 
 export default News;
