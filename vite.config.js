@@ -3,10 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    // Other build configurations
-  },
-  server: {
-    // Other server configurations
-  },
+  optimizeDeps: {
+    exclude: ['querystring'], // Exclude the querystring module from being externalized
+  }
 });

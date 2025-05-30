@@ -1,11 +1,10 @@
-import React,{useEffect, useState} from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
+import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
 import PropTypes from "prop-types";
-import Spinner from './Spinner';
-import NewsItem from './NewsItem';
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useState, useEffect } from "react";
 
-function News(props) {
-  
+const News = (props) => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -16,7 +15,8 @@ function News(props) {
   };
   const updateNews = async () => {
     props.setProgress(10);
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+   const url = `https://newsapi.org/v2/everything?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+
     setLoading(true);
     let data = await fetch(url);
     props.setProgress(30);
@@ -34,17 +34,14 @@ function News(props) {
   }, []);
 
   const fetchMoreData = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?country=${
-      props.country
-    }&category=${props.category}&apiKey=${props.apiKey}&page=${
-      page + 1
-    }&pageSize=${props.pageSize}`;
+   const url = `https://newsapi.org/v2/everything?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     setPage(page + 1);
     let data = await fetch(url);
     let parsedData = await data.json();
     setArticles(articles.concat(parsedData.articles));
     setTotalResults(parsedData.totalResults);
   };
+
   return (
     <>
       <h1 className=" text-centre mx-12 my-8 font-bold text-5xl">
@@ -59,17 +56,16 @@ function News(props) {
       </h2>
       {loading && <Spinner />}
       <InfiniteScroll
-        dataLength={articles ? articles.length : 0} 
+        dataLength={articles ? articles.length : 0} // Add a check for articles being defined
         next={fetchMoreData}
-        hasMore={articles ? articles.length !== totalResults : false}
-        loader={<Spinner />}
-      >
-       <div className="w-full lg:flex justify-center items-center">
-            <div className="container flex flex-wrap justify-center">
+        hasMore={articles ? articles.length !== totalResults : false} // Add a check for articles being defined
+        loader={<Spinner />}>
+        <div className="container lg:flex flex-wrap">
+          <div className="row flex flex-wrap justify-center items-center">
             {articles &&
               articles.map((element) => {
                 return (
-                  <div className="card-container" key={element.url}>
+                  <div className="col-md-4" key={element.url}>
                     <NewsItem
                       title={element.title ? element.title : ""}
                       description={
@@ -88,20 +84,19 @@ function News(props) {
         </div>
       </InfiniteScroll>
     </>
-  )
-}
+  );
+};
 
 News.defaultProps = {
-    country: "in",
-    pageSize: 8,
-    category: "general",
-  };
-  
-  News.propTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-  };
-  
+  country: "in",
+  pageSize: 8,
+  category: "general",
+};
 
-export default News
+News.propTypes = {
+  country: PropTypes.string,
+  pageSize: PropTypes.number,
+  category: PropTypes.string,
+};
+
+export default News;
