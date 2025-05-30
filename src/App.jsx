@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 function App() {
   const pageSize = 5;
   const apiKey = import.meta.env.VITE_API_KEY;
+
   const [progress, setProgress] = useState(0);
 
   return (
