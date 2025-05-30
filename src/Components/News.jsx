@@ -15,7 +15,7 @@ const News = (props) => {
   };
   const updateNews = async () => {
     props.setProgress(10);
-   const url = `https://newsapi.org/v2/top-headlines?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
 
     setLoading(true);
     let data = await fetch(url);
@@ -34,7 +34,7 @@ const News = (props) => {
   }, []);
 
   const fetchMoreData = async () => {
-   const url = `https://newsapi.org/v2/top-headlines?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?q=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     setPage(page + 1);
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -55,30 +55,31 @@ const News = (props) => {
         DailyBuzz - Top {capitalizeFirstLetter(props.category)} Headlines
       </h2>
       {loading && <Spinner />}
-      <InfiniteScroll
+      {/* <InfiniteScroll
         dataLength={articles ? articles.length : 0} // Add a check for articles being defined
         next={fetchMoreData}
         hasMore={articles ? articles.length !== totalResults : false} // Add a check for articles being defined
-        loader={<Spinner />}>
+        loader={<Spinner />}
+      > */}
         <div className="container lg:flex flex-wrap">
           <div className="row flex flex-wrap justify-center items-center">
             {articles &&
-             articles.map((element, index) => (
-  <div className="col-md-4" key={index}>
-    <NewsItem
-      title={element.title || ""}
-      description={element.description || ""}
-      imageUrl={element.urlToImage}
-      newsUrl={element.url}
-      author={element.author}
-      date={element.publishedAt}
-      source={element.source.name}
-    />
-  </div>
-))}
+              articles.map((element, index) => (
+                <div className="col-md-4" key={index}>
+                  <NewsItem
+                    title={element.title || ""}
+                    description={element.description || ""}
+                    imageUrl={element.urlToImage}
+                    newsUrl={element.url}
+                    author={element.author}
+                    date={element.publishedAt}
+                    source={element.source.name}
+                  />
+                </div>
+              ))}
           </div>
         </div>
-      </InfiniteScroll>
+      {/* </InfiniteScroll> */}
     </>
   );
 };
